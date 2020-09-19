@@ -20,9 +20,12 @@ const hassPassword = async (password) => {
   return hashedPassword;
 };
 
-const generateUser = async (name, email, password) => {
+const generateUser = async (name, lastname, dni, ages, email, password) => {
   const user = await userSchema.create({
     name,
+    lastname,
+    dni,
+    ages,
     email,
     password: await hassPassword(password),
   });

@@ -7,6 +7,22 @@ const userSchema = new mongoose.Schema({
     max: 255,
     min: 6,
   },
+  lastname: {
+    type: String,
+    required: true,
+    max: 255,
+    min: 6,
+  },
+  dni: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+  ages: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
   email: {
     type: String,
     required: true,

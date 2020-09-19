@@ -4,7 +4,7 @@ const { registerValidation } = require('../joiSchema/schemaRegister');
 const { schemaValidator } = require('../middlewares/schemaValidator');
 const { generateToken } = require('../utils/authHelpers');
 const {
-  findEmail, findPassword, generateUser, validPassword,
+  findEmail, generateUser, validPassword,
 } = require('../db/users');
 
 const router = express.Router({ mergeParams: true });
@@ -13,7 +13,9 @@ router
   .post('/register', (req, res, next) => {
     schemaValidator(registerValidation, req, next);
   }, async (req, res) => {
-    const { name, email, password } = req.body;
+    const {
+      name, lastname, dni, ages, email, password,
+    } = req.body;
     // Check if email is already'v in database
     const checkEmail = await findEmail(email);
     if (checkEmail) {
@@ -24,12 +26,19 @@ router
       });
     }
     // Try generate user
-    const user = await generateUser(name, email, password);
+    const user = await generateUser(name, lastname, dni, ages, email, password);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Error to generate user',
+        body: { user },
+      });
+    }
     try {
       const savedUser = await user.save();
       return res.status(200).json({
         success: true,
-        message: 'User was generated',
+        message: 'User generated',
         body: { user: savedUser },
       });
     } catch (err) {

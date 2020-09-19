@@ -1,26 +1,20 @@
 const express = require('express');
 
 const app = express();
+const cors = require('cors');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const mongodb = require('./db/mongoConnect');
 // Routes
 const authRoute = require('./routes/users');
 const postRoute = require('./routes/posts');
 
 dotenv.config();
 
-// Connect to DB
-mongoose.connect(
-  process.env.DB_CONNECT,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  () => console.log('MongoDB Atlas Online 🌍'),
-);
+mongodb.checkConection();
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 // Route Middlewares
 app.use('/api/user', authRoute);
