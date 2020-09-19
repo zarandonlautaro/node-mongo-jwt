@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { verifyToken } = require('../libs/verifyToken');
+const { checkToken } = require('../utils/authHelpers');
 
-router.get('/', verifyToken, (req, res) => {
+router.get('/', checkToken, (req, res) => {
   res.json({
     post: {
       title: 'my first api',
