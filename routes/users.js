@@ -4,7 +4,7 @@ const { registerValidation } = require('../joiSchema/schemaRegister');
 const { schemaValidator } = require('../middlewares/schemaValidator');
 const { generateToken } = require('../utils/authHelpers');
 const {
-  findEmail, generateUser, validPassword, getUsers,
+  findEmail, generateUser, validPassword, getUsers, getUser, deleteUser, updateUser,
 } = require('../db/users');
 
 const router = express.Router({ mergeParams: true });
@@ -26,7 +26,7 @@ router
   })
 
   .post('/register', (req, res, next) => {
-    schemaValidator(registerValidation, req, next);
+    schemaValidator(registerValidation, req, res, next);
   }, async (req, res) => {
     const {
       name, lastname, dni, age, email, password,
@@ -64,9 +64,8 @@ router
     }
   })
 
-  // Login
   .post('/login', (req, res, next) => {
-    schemaValidator(loginValidation, req, next);
+    schemaValidator(loginValidation, req, res, next);
   }, async (req, res) => {
     const { body } = req;
     // Check if email exist
@@ -74,7 +73,7 @@ router
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: 'The email is wrong',
+        message: 'Email is wrong',
         body: {},
       });
     }
@@ -83,7 +82,7 @@ router
     if (!checkPassword) {
       return res.status(400).json({
         success: false,
-        message: 'The password is wrong',
+        message: 'Password is wrong',
         body: {},
       });
     }
@@ -92,7 +91,7 @@ router
     if (!token) {
       return res.status(400).json({
         success: false,
-        message: 'The token is incorrect',
+        message: 'Token is invalid',
         body: {},
       });
     }
@@ -100,8 +99,27 @@ router
     res.setHeader('token', token);
     return res.status(200).json({
       success: true,
-      message: 'jwt generated',
+      message: 'Token generated',
       body: token,
+    });
+  })
+
+  .put('/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const toUpdate = req.body;
+
+    const updated = await updateUser(userId, toUpdate);
+    if (updated > 0) {
+      const user = await getUser(userId);
+      return res.status(200).json({
+        success: true,
+        message: 'User update',
+        body: user,
+      });
+    }
+    return res.status(404).json({
+      success: false,
+      message: 'User not find',
     });
   })
 
@@ -118,7 +136,7 @@ router
     }
     return res.status(404).json({
       success: false,
-      message: 'Usuario no encontrado',
+      message: 'User not found',
     });
   });
 

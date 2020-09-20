@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     min: 1,
   },
   age: {
-    type: Number,
+    type: Date,
     required: true,
     min: 1,
   },

@@ -46,8 +46,28 @@ const getUsers = async () => {
   return false;
 };
 
+const getUser = async (id) => {
+  const found = await userSchema.findOne({ _id: id });
+  return found;
+};
+
+const deleteUser = async (id) => {
+  const deleted = await userSchema.deleteOne({ _id: id });
+  return deleted.deletedCount;
+};
+
+const updateStock = async (code, toUpdate) => {
+  const userUpdate = await userSchema.updateOne({
+    _id: code,
+  }, toUpdate);
+  return userUpdate.nModified;
+};
+
 module.exports.findEmail = findEmail;
 module.exports.findPassword = findPassword;
 module.exports.generateUser = generateUser;
 module.exports.validPassword = validPassword;
 module.exports.getUsers = getUsers;
+module.exports.getUser = getUser;
+module.exports.deleteUser = deleteUser;
+module.exports.updateStock = updateStock;
