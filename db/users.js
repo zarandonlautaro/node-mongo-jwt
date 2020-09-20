@@ -9,6 +9,7 @@ const findEmail = async (email) => {
 
 const findPassword = async (email) => {
   const user = await userSchema.findOne({ email }, { _id: 0, password: 1 });
+  console.log(user)
   if (!user) return false;
   const { password } = user;
   return (password);
@@ -20,12 +21,12 @@ const hassPassword = async (password) => {
   return hashedPassword;
 };
 
-const generateUser = async (name, lastname, dni, ages, email, password) => {
+const generateUser = async (name, lastname, dni, age, email, password) => {
   const user = await userSchema.create({
     name,
     lastname,
     dni,
-    ages,
+    age,
     email,
     password: await hassPassword(password),
   });
@@ -38,7 +39,14 @@ const validPassword = async (password, email) => {
   return validPass;
 };
 
+const getUsers = async () => {
+  const users = await userSchema.find();
+  if (users) return users;
+  return false;
+};
+
 module.exports.findEmail = findEmail;
 module.exports.findPassword = findPassword;
 module.exports.generateUser = generateUser;
 module.exports.validPassword = validPassword;
+module.exports.getUsers = getUsers;

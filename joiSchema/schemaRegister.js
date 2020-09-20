@@ -6,7 +6,7 @@ const registerValidation = (req) => {
     name: Joi.string().min(1).required(),
     lastname: Joi.string().min(1).required(),
     dni: Joi.string().min(1).required(),
-    ages: Joi.string().min(1).required(),
+    age: Joi.string().min(1).required(),
     email: Joi.string().min(6).required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
     password: Joi.string().min(6).required(),
   });

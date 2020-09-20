@@ -4,17 +4,32 @@ const { registerValidation } = require('../joiSchema/schemaRegister');
 const { schemaValidator } = require('../middlewares/schemaValidator');
 const { generateToken } = require('../utils/authHelpers');
 const {
-  findEmail, generateUser, validPassword,
+  findEmail, generateUser, validPassword, getUsers,
 } = require('../db/users');
 
 const router = express.Router({ mergeParams: true });
 
 router
+  .get('/', async (req, res) => {
+    const users = await getUsers();
+    if (users) {
+      return res.status(200).json({
+        success: true,
+        message: 'Users in database',
+        body: users,
+      });
+    }
+    return res.status(404).json({
+      success: false,
+      message: 'Database empty of users',
+    });
+  })
+
   .post('/register', (req, res, next) => {
     schemaValidator(registerValidation, req, next);
   }, async (req, res) => {
     const {
-      name, lastname, dni, ages, email, password,
+      name, lastname, dni, age, email, password,
     } = req.body;
     // Check if email is already'v in database
     const checkEmail = await findEmail(email);
@@ -26,7 +41,7 @@ router
       });
     }
     // Try generate user
-    const user = await generateUser(name, lastname, dni, ages, email, password);
+    const user = await generateUser(name, lastname, dni, age, email, password);
     if (!user) {
       return res.status(400).json({
         success: false,
