@@ -9,7 +9,6 @@ const findEmail = async (email) => {
 
 const findPassword = async (email) => {
   const user = await userSchema.findOne({ email }, { _id: 0, password: 1 });
-  console.log(user)
   if (!user) return false;
   const { password } = user;
   return (password);

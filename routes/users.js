@@ -37,7 +37,6 @@ router
       return res.status(400).json({
         success: false,
         message: `Email (${email}) already exists`,
-        body: {},
       });
     }
     // Try generate user
