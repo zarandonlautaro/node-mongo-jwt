@@ -2,7 +2,9 @@ const bycrypt = require('bcryptjs');
 const { userSchema } = require('../schema/User');
 
 const findEmail = async (email) => {
-  const user = await userSchema.findOne({ email }, { _id: 0, email: 1 });
+  const user = await userSchema.findOne({ email }, {
+    _id: 0, name: 1, lastname: 2, dni: 3, age: 4, email: 5,
+  });
   if (!user) return false;
   return user;
 };
