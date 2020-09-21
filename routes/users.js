@@ -25,6 +25,22 @@ router
     });
   })
 
+  .get('/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const user = await getUser(userId);
+    if (user) {
+      return res.status(200).json({
+        success: true,
+        message: 'User schema',
+        body: user,
+      });
+    }
+    return res.status(404).json({
+      success: false,
+      message: 'User not found',
+    });
+  })
+
   .post('/register', (req, res, next) => {
     schemaValidator(registerValidation, req, res, next);
   }, async (req, res) => {
