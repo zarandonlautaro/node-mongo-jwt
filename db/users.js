@@ -56,9 +56,9 @@ const deleteUser = async (id) => {
   return deleted.deletedCount;
 };
 
-const updateStock = async (code, toUpdate) => {
+const updateUser = async (id, toUpdate) => {
   const userUpdate = await userSchema.updateOne({
-    _id: code,
+    _id: id,
   }, toUpdate);
   return userUpdate.nModified;
 };
@@ -70,4 +70,4 @@ module.exports.validPassword = validPassword;
 module.exports.getUsers = getUsers;
 module.exports.getUser = getUser;
 module.exports.deleteUser = deleteUser;
-module.exports.updateStock = updateStock;
+module.exports.updateUser = updateUser;
