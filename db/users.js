@@ -56,10 +56,10 @@ const deleteUser = async (id) => {
   return deleted.deletedCount;
 };
 
-const updateUser = async (id, toUpdate) => {
+const updateUser = async (id, newDataUser) => {
   const userUpdate = await userSchema.updateOne({
     _id: id,
-  }, toUpdate);
+  }, newDataUser);
   return userUpdate.nModified;
 };
 
