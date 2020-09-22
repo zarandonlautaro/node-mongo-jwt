@@ -51,7 +51,8 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 You will need :
 - Create .env
-- Add variables 
+
+And add variables :
 - DB_CONNECT = url mongodb+srv://<user>:<passwor>@cluster0.z6aha.mongodb.net/<dbname>?retryWrites=true&w=majority
 - TOKEN_SECRET = what ever you want but only strings
 ## Running the project
